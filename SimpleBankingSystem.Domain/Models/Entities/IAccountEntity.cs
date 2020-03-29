@@ -4,10 +4,5 @@
     {
         IAccountBalance Balance { get; }
         IAccountStatus Status { get; }
-        
-        void DepositMoney(decimal money);
-        void WithdrawMoney(decimal money);
-        void CloseAccount();
-        void FreezeAccount();
     }
 }
