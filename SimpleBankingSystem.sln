@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.852
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBankingSystem.Domain", "SimpleBankingSystem.Domain\SimpleBankingSystem.Domain.csproj", "{01CFE8C1-425F-4E8C-9805-A4533DAA9283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBankingSystem.Domain", "SimpleBankingSystem.Domain\SimpleBankingSystem.Domain.csproj", "{01CFE8C1-425F-4E8C-9805-A4533DAA9283}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBankingSystem.UnitTests", "SimpleBankingSystem.UnitTests\SimpleBankingSystem.UnitTests.csproj", "{7FCF5760-3AFD-4272-B181-6437A16E1837}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBankingSystem.UnitTests", "SimpleBankingSystem.UnitTests\SimpleBankingSystem.UnitTests.csproj", "{7FCF5760-3AFD-4272-B181-6437A16E1837}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBankingSystem.API", "SimpleBankingSystem.API\SimpleBankingSystem.API.csproj", "{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{7FCF5760-3AFD-4272-B181-6437A16E1837}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7FCF5760-3AFD-4272-B181-6437A16E1837}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7FCF5760-3AFD-4272-B181-6437A16E1837}.Release|Any CPU.Build.0 = Release|Any CPU
+		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
