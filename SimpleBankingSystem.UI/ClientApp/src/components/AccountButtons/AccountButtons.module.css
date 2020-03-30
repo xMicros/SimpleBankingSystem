@@ -1,0 +1,45 @@
+.AccountButtons {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 20px 0;
+  width: 100%;
+}
+
+.AccountButtons button {
+  flex-grow: 1;
+  margin: 0 10px;
+  padding: 20px 50px;
+  font-size: 20px;
+  text-shadow: 0 1px 2px black;
+  background-color: #365673;
+  color: white;
+  border: 2px solid #365673;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px black;
+  transition-duration: 0.2s;
+  cursor: pointer;
+}
+
+.AccountButtons button:hover {
+  text-shadow: 0 0 0 black;
+  background-color: white;
+  color: #365673;
+}
+
+.AccountButtons button:active {
+  background-color: #aac1d8;
+}
+
+@media only screen and (max-width: 600px) {
+  .AccountButtons {
+    flex-direction: column;
+    margin: 10px 0;
+  }
+
+  .AccountButtons button {
+    width: 90%;
+    margin: 5px 0;
+    padding: 20px 30px;
+  }
+}

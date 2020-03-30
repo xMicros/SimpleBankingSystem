@@ -1,0 +1,14 @@
+.AccountData {
+  margin: 10px 0 30px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #365673;
+  text-shadow: 0 1px 2px white;
+}
+
+@media only screen and (max-width: 600px) {
+  .AccountData {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+}

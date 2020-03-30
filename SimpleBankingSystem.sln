@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SimpleBankingSystem.UnitTes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBankingSystem.API", "SimpleBankingSystem.API\SimpleBankingSystem.API.csproj", "{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleBankingSystem.UI", "SimpleBankingSystem.UI\SimpleBankingSystem.UI.csproj", "{FAD611AE-81BC-442C-A8AD-A9DDEEB1B926}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{367BC070-2AA8-4D1E-A2FC-79C3AD4A865E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAD611AE-81BC-442C-A8AD-A9DDEEB1B926}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAD611AE-81BC-442C-A8AD-A9DDEEB1B926}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAD611AE-81BC-442C-A8AD-A9DDEEB1B926}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAD611AE-81BC-442C-A8AD-A9DDEEB1B926}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

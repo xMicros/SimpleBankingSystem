@@ -15,6 +15,9 @@ namespace SimpleBankingSystem.API
 #pragma warning disable CS1591
     public class Startup
     {
+        private const string AllowCustomOrigins = "AllowCustomOrigins";
+        private const string ClientAppUrl = "https://localhost:44389";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -46,6 +49,17 @@ namespace SimpleBankingSystem.API
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 generator.IncludeXmlComments(xmlPath);
             });
+            services.AddCors(options =>
+            {
+                options.AddPolicy(AllowCustomOrigins,
+                builder =>
+                {
+                    builder.AllowAnyHeader();
+                    builder.AllowCredentials();
+                    builder.AllowAnyMethod();
+                    builder.WithOrigins(ClientAppUrl);
+                });
+            });
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -66,6 +80,7 @@ namespace SimpleBankingSystem.API
                 options.RoutePrefix = string.Empty;
             });
             app.UseHttpsRedirection();
+            app.UseCors(AllowCustomOrigins);
             app.UseMvc();
         }
 
