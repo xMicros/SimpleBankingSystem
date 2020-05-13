@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using MediatR;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -60,6 +61,7 @@ namespace SimpleBankingSystem.API
                     builder.WithOrigins(ClientAppUrl);
                 });
             });
+            services.AddMediatR(Assembly.Load("SimpleBankingSystem.Domain"));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

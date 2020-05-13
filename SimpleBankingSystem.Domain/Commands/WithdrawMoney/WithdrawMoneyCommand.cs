@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace SimpleBankingSystem.Domain.Commands.WithdrawMoney
 {
-    public class WithdrawMoneyCommand : ICommand
+    public class WithdrawMoneyCommand : IRequest
     {
         public Guid AccountId { get; set; }
         public decimal MoneyAmount { get; set; }

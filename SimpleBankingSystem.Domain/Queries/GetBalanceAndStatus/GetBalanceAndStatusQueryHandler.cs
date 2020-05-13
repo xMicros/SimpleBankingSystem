@@ -1,9 +1,10 @@
-﻿using SimpleBankingSystem.Domain.Models.Entities;
+﻿using MediatR;
+using SimpleBankingSystem.Domain.Models.Entities;
 using System;
 
 namespace SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus
 {
-    public class GetBalanceAndStatusQueryHandler : IQueryHandler<GetBalanceAndStatusQuery, GetBalanceAndStatusQueryResponse>
+    public class GetBalanceAndStatusQueryHandler : RequestHandler<GetBalanceAndStatusQuery, GetBalanceAndStatusQueryResponse>
     {
         private readonly IAccountEntity _account;
 
@@ -12,7 +13,7 @@ namespace SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus
             _account = account ?? throw new ArgumentNullException(nameof(account));
         }
 
-        public GetBalanceAndStatusQueryResponse Execute(GetBalanceAndStatusQuery query)
+        protected override GetBalanceAndStatusQueryResponse Handle(GetBalanceAndStatusQuery query)
         {
             if (query == null)
             {

@@ -1,4 +1,5 @@
-﻿using SimpleBankingSystem.Domain.Enums;
+﻿using MediatR;
+using SimpleBankingSystem.Domain.Enums;
 using SimpleBankingSystem.Domain.Exceptions;
 using SimpleBankingSystem.Domain.Models.Entities;
 using SimpleBankingSystem.Domain.Validators;
@@ -6,7 +7,7 @@ using System;
 
 namespace SimpleBankingSystem.Domain.Commands.DepositMoney
 {
-    public class DepositMoneyCommandHandler : ICommandHandler<DepositMoneyCommand>
+    public class DepositMoneyCommandHandler : RequestHandler<DepositMoneyCommand>
     {
         private readonly IAccountStatusValidator _statusValidator;
         private readonly IAccountEntity _account;
@@ -17,7 +18,7 @@ namespace SimpleBankingSystem.Domain.Commands.DepositMoney
             _account = account ?? throw new ArgumentNullException(nameof(account));
         }
 
-        public void Execute(DepositMoneyCommand command)
+        protected override void Handle(DepositMoneyCommand command)
         {
             if (command == null)
             {

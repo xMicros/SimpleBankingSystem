@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace SimpleBankingSystem.Domain.Commands.FreezeAccount
 {
-    public class FreezeAccountCommand : ICommand
+    public class FreezeAccountCommand : IRequest
     {
         public Guid AccountId { get; set; }
     }

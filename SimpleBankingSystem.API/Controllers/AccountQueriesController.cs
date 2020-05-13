@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using SimpleBankingSystem.Domain.Models.Entities;
 using SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus;
 
 namespace SimpleBankingSystem.API.Controllers
@@ -14,15 +15,15 @@ namespace SimpleBankingSystem.API.Controllers
     [ApiController]
     public class AccountQueriesController : ControllerBase
     {
-        private readonly IAccountEntity _account;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Account queries controller constructor
         /// </summary>
-        /// <param name="account">Account entity (normally would be retrieved from database)</param>
-        public AccountQueriesController(IAccountEntity account)
+        /// <param name="mediator">Mediator object</param>
+        public AccountQueriesController(IMediator mediator)
         {
-            _account = account ?? throw new ArgumentNullException(nameof(account));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
@@ -42,14 +43,11 @@ namespace SimpleBankingSystem.API.Controllers
         [ProducesResponseType(typeof(GetBalanceAndStatusQueryResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetBalanceAndStatus()
+        public async Task<IActionResult> GetBalanceAndStatus()
         {
             try
             {
-                var query = new GetBalanceAndStatusQuery();
-                var queryHandler = new GetBalanceAndStatusQueryHandler(_account);
-                var queryResponse = queryHandler.Execute(query);
-                return Ok(queryResponse);
+                return Ok(await _mediator.Send(new GetBalanceAndStatusQuery()));
             }
             catch (ArgumentNullException ex)
             {

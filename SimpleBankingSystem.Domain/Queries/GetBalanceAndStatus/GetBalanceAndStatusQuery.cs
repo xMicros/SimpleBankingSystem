@@ -1,8 +1,9 @@
-﻿using System;
+﻿using MediatR;
+using System;
 
 namespace SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus
 {
-    public class GetBalanceAndStatusQuery : IQuery<GetBalanceAndStatusQueryResponse>
+    public class GetBalanceAndStatusQuery : IRequest<GetBalanceAndStatusQueryResponse>
     {
         public Guid AccountId { get; set; }
     }

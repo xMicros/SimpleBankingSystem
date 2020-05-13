@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SimpleBankingSystem.Domain.Commands.DepositMoney;
 using SimpleBankingSystem.Domain.Commands.WithdrawMoney;
 using SimpleBankingSystem.Domain.Exceptions;
-using SimpleBankingSystem.Domain.Models.Entities;
-using SimpleBankingSystem.Domain.Validators;
 
 namespace SimpleBankingSystem.API.Controllers
 {
@@ -17,21 +17,15 @@ namespace SimpleBankingSystem.API.Controllers
     [ApiController]
     public class AccountCommandsController : ControllerBase
     {
-        private readonly IAccountStatusValidator _statusValidator;
-        private readonly IAccountBalanceValidator _balanceValidator;
-        private readonly IAccountEntity _account;
+        private readonly IMediator _mediator;
 
         /// <summary>
         /// Account commands controller constructor
         /// </summary>
-        /// <param name="statusValidator">Account status validator</param>
-        /// <param name="balanceValidator">Account balance validator</param>
-        /// <param name="account">Account entity (normally would be retrieved from database)</param>
-        public AccountCommandsController(IAccountStatusValidator statusValidator, IAccountBalanceValidator balanceValidator, IAccountEntity account)
+        /// <param name="mediator">Mediator object</param>
+        public AccountCommandsController(IMediator mediator)
         {
-            _statusValidator = statusValidator ?? throw new ArgumentNullException(nameof(statusValidator));
-            _balanceValidator = balanceValidator ?? throw new ArgumentNullException(nameof(balanceValidator));
-            _account = account ?? throw new ArgumentNullException(nameof(account));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         /// <summary>
@@ -58,12 +52,11 @@ namespace SimpleBankingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult DepositMoney(DepositMoneyCommand command)
+        public async Task<IActionResult> DepositMoney(DepositMoneyCommand command)
         {
             try
             {
-                var commandHandler = new DepositMoneyCommandHandler(_statusValidator, _account);
-                commandHandler.Execute(command);
+                await _mediator.Send(command);
                 return Ok();
             }
             catch (ArgumentNullException ex)
@@ -104,12 +97,11 @@ namespace SimpleBankingSystem.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult WithdrawMoney(WithdrawMoneyCommand command)
+        public async Task<IActionResult> WithdrawMoney(WithdrawMoneyCommand command)
         {
             try
             {
-                var commandHandler = new WithdrawMoneyCommandHandler(_statusValidator, _balanceValidator, _account);
-                commandHandler.Execute(command);
+                await _mediator.Send(command);
                 return Ok();
             }
             catch (ArgumentNullException ex)
