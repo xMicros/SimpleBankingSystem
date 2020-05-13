@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -16,6 +17,7 @@ namespace SimpleBankingSystem.API
 #pragma warning disable CS1591
     public class Startup
     {
+        private const string DomainAssemblyName = "SimpleBankingSystem.Domain";
         private const string AllowCustomOrigins = "AllowCustomOrigins";
         private const string ClientAppUrl = "https://localhost:44389";
 
@@ -61,7 +63,8 @@ namespace SimpleBankingSystem.API
                     builder.WithOrigins(ClientAppUrl);
                 });
             });
-            services.AddMediatR(Assembly.Load("SimpleBankingSystem.Domain"));
+            services.AddMediatR(Assembly.Load(DomainAssemblyName));
+            services.AddAutoMapper(Assembly.Load(DomainAssemblyName));
         }
         
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)

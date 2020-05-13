@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using AutoMapper;
+using MediatR;
 using SimpleBankingSystem.Domain.Models.Entities;
 using System;
 
@@ -6,10 +7,12 @@ namespace SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus
 {
     public class GetBalanceAndStatusQueryHandler : RequestHandler<GetBalanceAndStatusQuery, GetBalanceAndStatusQueryResponse>
     {
+        private readonly IMapper _mapper;
         private readonly IAccountEntity _account;
 
-        public GetBalanceAndStatusQueryHandler(IAccountEntity account)
+        public GetBalanceAndStatusQueryHandler(IMapper mapper, IAccountEntity account)
         {
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
             _account = account ?? throw new ArgumentNullException(nameof(account));
         }
 
@@ -20,11 +23,8 @@ namespace SimpleBankingSystem.Domain.Queries.GetBalanceAndStatus
                 throw new ArgumentNullException(nameof(query));
             }
 
-            return new GetBalanceAndStatusQueryResponse
-            {
-                Balance = _account.Balance.Amount,
-                Status = _account.Status.Value.ToString()
-            };
+            var queryResponse = _mapper.Map<GetBalanceAndStatusQueryResponse>(_account);
+            return queryResponse;
         }
     }
 }
