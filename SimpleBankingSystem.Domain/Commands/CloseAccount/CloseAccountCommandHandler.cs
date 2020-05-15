@@ -1,34 +1,38 @@
 ﻿using MediatR;
 using SimpleBankingSystem.Domain.Enums;
 using SimpleBankingSystem.Domain.Exceptions;
-using SimpleBankingSystem.Domain.Models.Entities;
+using SimpleBankingSystem.Domain.Repositories;
 using SimpleBankingSystem.Domain.Validators;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SimpleBankingSystem.Domain.Commands.CloseAccount
 {
-    public class CloseAccountCommandHandler : RequestHandler<CloseAccountCommand>
+    public class CloseAccountCommandHandler : AsyncRequestHandler<CloseAccountCommand>
     {
         private readonly IAccountStatusValidator _statusValidator;
-        private readonly IAccountEntity _account;
+        private readonly IAccountRepository _accountRepository;
 
-        public CloseAccountCommandHandler(IAccountStatusValidator statusValidator, IAccountEntity account)
+        public CloseAccountCommandHandler(IAccountStatusValidator statusValidator, IAccountRepository accountRepository)
         {
             _statusValidator = statusValidator ?? throw new ArgumentNullException(nameof(statusValidator));
-            _account = account ?? throw new ArgumentNullException(nameof(account));
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
-        protected override void Handle(CloseAccountCommand command)
+        protected async override Task Handle(CloseAccountCommand command, CancellationToken cancellationToken)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            if (_statusValidator.IsUnverifiedOrClosed(_account.Status))
+            var account = await _accountRepository.GetById(command.AccountId);
+
+            if (_statusValidator.IsUnverifiedOrClosed(account.Status))
             {
                 throw new ForbiddenCommandException();
             }
-            _account.Status.ChangeStatus(AccountStatusValues.Closed);
+            account.Status.ChangeStatus(AccountStatusValues.Closed);
         }
     }
 }

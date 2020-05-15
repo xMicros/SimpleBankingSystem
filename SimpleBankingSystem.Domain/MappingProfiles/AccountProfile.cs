@@ -8,7 +8,7 @@ namespace SimpleBankingSystem.Domain.MappingProfiles
     {
         public AccountProfile()
         {
-            CreateMap<AccountEntity, GetBalanceAndStatusQueryResponse>()
+            CreateMap<IAccountEntity, GetBalanceAndStatusQueryResponse>()
                 .ForMember(response => response.Balance, options => options.MapFrom(account => account.Balance.Amount))
                 .ForMember(response => response.Status, options => options.MapFrom(account => account.Status.Value.ToString()));
         }

@@ -7,6 +7,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using SimpleBankingSystem.Domain.Models.Entities;
+using SimpleBankingSystem.Domain.Repositories;
 using SimpleBankingSystem.Domain.Validators;
 using System;
 using System.IO;
@@ -34,6 +35,7 @@ namespace SimpleBankingSystem.API
             services.AddScoped<IAccountBalanceValidator, AccountBalanceValidator>();
             services.AddScoped<IAccountStatusValidator, AccountStatusValidator>();
             services.AddSingleton<IAccountEntity>(CreateAccountWithFixedGuid());
+            services.AddScoped<IAccountRepository, DummyAccountRepository>();
             services.AddSwaggerGen(generator =>
             {
                 generator.SwaggerDoc("v1", new OpenApiInfo

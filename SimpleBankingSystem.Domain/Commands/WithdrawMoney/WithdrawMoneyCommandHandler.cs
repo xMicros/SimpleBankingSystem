@@ -1,41 +1,45 @@
 ﻿using MediatR;
 using SimpleBankingSystem.Domain.Enums;
 using SimpleBankingSystem.Domain.Exceptions;
-using SimpleBankingSystem.Domain.Models.Entities;
+using SimpleBankingSystem.Domain.Repositories;
 using SimpleBankingSystem.Domain.Validators;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SimpleBankingSystem.Domain.Commands.WithdrawMoney
 {
-    public class WithdrawMoneyCommandHandler : RequestHandler<WithdrawMoneyCommand>
+    public class WithdrawMoneyCommandHandler : AsyncRequestHandler<WithdrawMoneyCommand>
     {
         private readonly IAccountStatusValidator _statusValidator;
         private readonly IAccountBalanceValidator _balanceValidator;
-        private readonly IAccountEntity _account;
+        private readonly IAccountRepository _accountRepository;
 
-        public WithdrawMoneyCommandHandler(IAccountStatusValidator statusValidator, IAccountBalanceValidator balanceValidator, IAccountEntity account)
+        public WithdrawMoneyCommandHandler(IAccountStatusValidator statusValidator, IAccountBalanceValidator balanceValidator, IAccountRepository accountRepository)
         {
             _statusValidator = statusValidator ?? throw new ArgumentNullException(nameof(statusValidator));
             _balanceValidator = balanceValidator ?? throw new ArgumentNullException(nameof(balanceValidator));
-            _account = account ?? throw new ArgumentNullException(nameof(account));
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
-        protected override void Handle(WithdrawMoneyCommand command)
+        protected async override Task Handle(WithdrawMoneyCommand command, CancellationToken cancellationToken)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            if (_statusValidator.IsUnverifiedOrClosed(_account.Status) ||
-                !_balanceValidator.CanWithdrawMoney(_account.Balance, command.MoneyAmount))
+            var account = await _accountRepository.GetById(command.AccountId);
+
+            if (_statusValidator.IsUnverifiedOrClosed(account.Status) ||
+                !_balanceValidator.CanWithdrawMoney(account.Balance, command.MoneyAmount))
             {
                 throw new ForbiddenCommandException();
             }
-            _account.Balance.SubtractMoney(command.MoneyAmount);
+            account.Balance.SubtractMoney(command.MoneyAmount);
 
-            if (_statusValidator.IsFrozen(_account.Status))
+            if (_statusValidator.IsFrozen(account.Status))
             {
-                _account.Status.ChangeStatus(AccountStatusValues.Verified);
+                account.Status.ChangeStatus(AccountStatusValues.Verified);
             }
         }
     }

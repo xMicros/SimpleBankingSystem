@@ -1,38 +1,42 @@
 ﻿using MediatR;
 using SimpleBankingSystem.Domain.Enums;
 using SimpleBankingSystem.Domain.Exceptions;
-using SimpleBankingSystem.Domain.Models.Entities;
+using SimpleBankingSystem.Domain.Repositories;
 using SimpleBankingSystem.Domain.Validators;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace SimpleBankingSystem.Domain.Commands.DepositMoney
 {
-    public class DepositMoneyCommandHandler : RequestHandler<DepositMoneyCommand>
+    public class DepositMoneyCommandHandler : AsyncRequestHandler<DepositMoneyCommand>
     {
         private readonly IAccountStatusValidator _statusValidator;
-        private readonly IAccountEntity _account;
+        private readonly IAccountRepository _accountRepository;
 
-        public DepositMoneyCommandHandler(IAccountStatusValidator statusValidator, IAccountEntity account)
+        public DepositMoneyCommandHandler(IAccountStatusValidator statusValidator, IAccountRepository accountRepository)
         {
             _statusValidator = statusValidator ?? throw new ArgumentNullException(nameof(statusValidator));
-            _account = account ?? throw new ArgumentNullException(nameof(account));
+            _accountRepository = accountRepository ?? throw new ArgumentNullException(nameof(accountRepository));
         }
 
-        protected override void Handle(DepositMoneyCommand command)
+        protected async override Task Handle(DepositMoneyCommand command, CancellationToken cancellationToken)
         {
             if (command == null)
             {
                 throw new ArgumentNullException(nameof(command));
             }
-            if (_statusValidator.IsClosed(_account.Status))
+            var account = await _accountRepository.GetById(command.AccountId);
+
+            if (_statusValidator.IsClosed(account.Status))
             {
                 throw new ForbiddenCommandException();
             }
-            _account.Balance.AddMoney(command.MoneyAmount);
+            account.Balance.AddMoney(command.MoneyAmount);
 
-            if (_statusValidator.IsFrozen(_account.Status))
+            if (_statusValidator.IsFrozen(account.Status))
             {
-                _account.Status.ChangeStatus(AccountStatusValues.Verified);
+                account.Status.ChangeStatus(AccountStatusValues.Verified);
             }
         }
     }
